@@ -47,7 +47,8 @@ RUN export DEBIAN_FRONTEND="noninteractive" \
     binutils-multiarch-dev \
     build-essential \
     ca-certificates \
-    clang \
+    gcc \
+    g++ \
     git \
     libbz2-dev \
     libmpc-dev \
@@ -66,6 +67,9 @@ RUN export DEBIAN_FRONTEND="noninteractive" \
     wget \
     xz-utils \
     zlib1g-dev \
+    libarchive-tools \
+    curl \
+    python3 \
   && apt-get -y autoremove \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -132,6 +136,7 @@ ARG OSX_SDK
 WORKDIR /tmp/osxcross
 COPY --link --from=osxcross-src /osxcross .
 COPY --link --from=sdk /$OSX_SDK.tar.xz ./tarballs/$OSX_SDK.tar.xz
+RUN UNATTENDED=1 CLANG_VERSION=16.0.6 GITPROJECT=llvm BUILD_DIR=/out/clang ./build_clang.sh
 RUN OSX_VERSION_MIN=10.10 UNATTENDED=1 ENABLE_COMPILER_RT_INSTALL=1 TARGET_DIR=/out/osxcross ./build.sh
 RUN mkdir -p /out/osxsdk/osxsdk
 
