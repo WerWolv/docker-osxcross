@@ -14,9 +14,6 @@ on:
       - '*'
     paths-ignore:
       - '**.md'
-  pull_request:
-    paths-ignore:
-      - '**.md'
 
 env:
   DOCKERHUB_SLUG: WerWolv/osxcross
@@ -24,7 +21,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, oracle]
     strategy:
       fail-fast: false
       matrix:
